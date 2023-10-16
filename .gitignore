@@ -1,7 +1,8 @@
 .pio
 .vscode/
 .cache/
-node_modules/
+www/node_modules/
+www/build/
 configs/MyBoard
 .DS_Store
 build/

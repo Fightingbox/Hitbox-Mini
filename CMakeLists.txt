@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.13)
 include(CMakePrintHelpers)
 
 
-
+set(ENV{GP2040_BOARDCONFIG} PicoFightingBoard)
 
 # initialize the SDK based on PICO_SDK_PATH
 # note: this must happen before project()
@@ -18,6 +18,8 @@ endif()
 project(GP2040-CE LANGUAGES C CXX ASM VERSION 0.7.4)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
+
+
 
 if(DEFINED ENV{GP2040_BOARDCONFIG})
   set(GP2040_BOARDCONFIG $ENV{GP2040_BOARDCONFIG})

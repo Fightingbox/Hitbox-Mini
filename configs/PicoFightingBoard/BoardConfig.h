@@ -35,7 +35,7 @@
 #define PIN_BUTTON_A1   4           // A1 / Guide / Home / PS / 13 / ~
 #define PIN_BUTTON_A2   20          // A2 / ~ / Capture / ~ / 14 / ~
 #define PIN_BUTTON_FN   -1          // Hotkey Function
-#define PIN_BUTTON_TURBO -1         // Turbo
+#define PIN_BUTTON_TURBO 28         // Turbo
 #define PIN_BUTTON_REVERSE -1       // UDLR Reverse
 #define PIN_SLIDER_ONE    -1         // Left Stick Slider
 #define PIN_SLIDER_TWO    -1         // Right Stick Slider
@@ -85,26 +85,27 @@
 // Unless you are planning on running custom animations I would recommmend you leave this as is.
 
 #define TURBO_LED_PIN -1
+#define TURBO_ENABLED 1
 
 #define BOARD_LEDS_PIN 15
 
 #define LED_BRIGHTNESS_MAXIMUM 150
 #define LED_BRIGHTNESS_STEPS 5
 #define LED_FORMAT LED_FORMAT_GRB
-#define LEDS_PER_PIXEL 2
+#define LEDS_PER_PIXEL 1
 
-#define LEDS_DPAD_LEFT   11
-#define LEDS_DPAD_DOWN   10
-#define LEDS_DPAD_RIGHT  9
+#define LEDS_DPAD_LEFT   1
+#define LEDS_DPAD_DOWN   2
+#define LEDS_DPAD_RIGHT  3
 #define LEDS_DPAD_UP     0
-#define LEDS_BUTTON_B3   8
-#define LEDS_BUTTON_B4   7
+#define LEDS_BUTTON_B3   4
+#define LEDS_BUTTON_B4   5
 #define LEDS_BUTTON_R1   6
-#define LEDS_BUTTON_L1   5
-#define LEDS_BUTTON_B1   1
-#define LEDS_BUTTON_B2   2
-#define LEDS_BUTTON_R2   3
-#define LEDS_BUTTON_L2   4
+#define LEDS_BUTTON_L1   7
+#define LEDS_BUTTON_B1   11
+#define LEDS_BUTTON_B2   10
+#define LEDS_BUTTON_R2   9
+#define LEDS_BUTTON_L2   8
 #define LEDS_BUTTON_S1   -1
 #define LEDS_BUTTON_S2   -1
 #define LEDS_BUTTON_L3   -1
