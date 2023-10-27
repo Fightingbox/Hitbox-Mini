@@ -10,7 +10,7 @@
 ## Upgrade the firmware:
 - Unplug your device.
 - Put your device into Bootsel/USB mode. A new removable drive named RPI-RP2 should appear in your file explorer.
-- Drag and drop the GP2040-CE_XXX_Fightingbox-mini.uf2 firmware into the removable drive.
+- Drag and drop the GP2040-CE_XXX.uf2 firmware into the removable drive.
 - Wait for the device to automatically disconnect.
 
 ### If you encounter problems updating firmware, please refer to the official firmware update [Tutorial](https://gp2040-ce.info/?spm=a2g0o.detail.1000023.2.163cu936u936KZ#/installation).
