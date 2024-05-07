@@ -56,7 +56,7 @@
 #define KEY_BUTTON_FN   -1                    // Hotkey Function    
 
 #define TURBO_ENABLED 1
-#define GPIO_PIN_28 GpioAction::BUTTON_PRESS_TURBO                                    |
+#define GPIO_PIN_28 GpioAction::BUTTON_PRESS_TURBO         
 
 #define BOARD_LEDS_PIN 15
 #define LED_BRIGHTNESS_MAXIMUM 150
