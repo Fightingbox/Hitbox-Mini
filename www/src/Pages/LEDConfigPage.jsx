@@ -3,6 +3,9 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
+
+import DraggableListGroup from '../Components/DraggableListGroup';
+
 import { Formik, useFormikContext } from 'formik';
 import * as yup from 'yup';
 import orderBy from 'lodash/orderBy';
@@ -11,7 +14,6 @@ import { Trans, useTranslation } from 'react-i18next';
 import { AppContext } from '../Contexts/AppContext';
 import ColorPicker from '../Components/ColorPicker';
 import Section from '../Components/Section';
-import DraggableListGroup from '../Components/DraggableListGroup';
 import FormControl from '../Components/FormControl';
 import FormSelect from '../Components/FormSelect';
 import { getButtonLabels } from '../Data/Buttons';
@@ -75,7 +77,7 @@ const schema = yup.object().shape({
 		.min(1)
 		.max(10)
 		.label('Brightness Steps'),
-	dataPin: yup.number().required().validatePinWhenValue('dataPin'),
+	dataPin: yup.number().required().checkUsedPins(),
 	ledFormat: yup
 		.number()
 		.required()
@@ -203,10 +205,6 @@ const FormContext = ({
 				getLedButtons(buttonLabels, assigned, true, swapTpShareLabels),
 			];
 
-			data.pledIndex1 = data.pledType === 1 ? data.pledPin1 : -1;
-			data.pledIndex2 = data.pledType === 1 ? data.pledPin2 : -1;
-			data.pledIndex3 = data.pledType === 1 ? data.pledPin3 : -1;
-			data.pledIndex4 = data.pledType === 1 ? data.pledPin4 : -1;
 
 			setDataSources(dataSources);
 			setValues(data);
@@ -328,27 +326,6 @@ export default function LEDConfigPage() {
 		e.preventDefault();
 
 		values.pledType = parseInt(values.pledType);
-
-		// Consolidate PLED fields based on selected type
-		switch (values.pledType) {
-			case 0:
-				// PLED pin already set
-				break;
-
-			case 1:
-				values.pledPin1 = values.pledIndex1;
-				values.pledPin2 = values.pledIndex2;
-				values.pledPin3 = values.pledIndex3;
-				values.pledPin4 = values.pledIndex4;
-				break;
-
-			default:
-				values.pledPin1 = -1;
-				values.pledPin2 = -1;
-				values.pledPin3 = -1;
-				values.pledPin4 = -1;
-				break;
-		}
 
 		setValues(values);
 		handleSubmit();
@@ -476,6 +453,23 @@ export default function LEDConfigPage() {
 								/>
 							</div>
 						</Row>
+					</Section>
+					<Section title={t('LedConfig:rgb-order.header-text')}>
+						<p className="card-text">
+							{t('LedConfig:rgb-order.sub-header-text')}
+						</p>
+						<p className="card-text">
+							{t('LedConfig:rgb-order.sub-header1-text')}
+						</p>
+						<DraggableListGroup
+							groupName="test"
+							titles={[
+								t('LedConfig:rgb-order.available-header-text'),
+								t('LedConfig:rgb-order.assigned-header-text'),
+							]}
+							dataSources={dataSources}
+							onChange={(a) => ledOrderChanged(a, values.ledsPerButton)}
+						/>
 					</Section>
 					<Section title={t('LedConfig:player.header-text')}>
 						<Form.Group as={Col}>
@@ -664,23 +658,6 @@ export default function LEDConfigPage() {
 								</Trans>
 							</p>
 						</Form.Group>
-					</Section>
-					<Section title={t('LedConfig:rgb-order.header-text')}>
-						<p className="card-text">
-							{t('LedConfig:rgb-order.sub-header-text')}
-						</p>
-						<p className="card-text">
-							{t('LedConfig:rgb-order.sub-header1-text')}
-						</p>
-						<DraggableListGroup
-							groupName="test"
-							titles={[
-								t('LedConfig:rgb-order.available-header-text'),
-								t('LedConfig:rgb-order.assigned-header-text'),
-							]}
-							dataSources={dataSources}
-							onChange={(a) => ledOrderChanged(a, values.ledsPerButton)}
-						/>
 					</Section>
 					<Button type="submit">{t('Common:button-save-label')}</Button>
 					{saveMessage ? <span className="alert">{saveMessage}</span> : null}

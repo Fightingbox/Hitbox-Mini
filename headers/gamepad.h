@@ -2,16 +2,11 @@
 #define _GAMEPAD_H_
 
 #include "BoardConfig.h"
+#include "types.h"
 #include <string.h>
 
 #include "enums.pb.h"
-#include "gamepad/GamepadDebouncer.h"
 #include "gamepad/GamepadState.h"
-#include "gamepad/descriptors/HIDDescriptors.h"
-#include "gamepad/descriptors/SwitchDescriptors.h"
-#include "gamepad/descriptors/XInputDescriptors.h"
-#include "gamepad/descriptors/KeyboardDescriptors.h"
-#include "gamepad/descriptors/PS4Descriptors.h"
 
 #include "pico/stdlib.h"
 
@@ -25,47 +20,29 @@ extern uint64_t getMicro();
 
 struct GamepadButtonMapping
 {
-	GamepadButtonMapping(uint8_t p, uint16_t bm) : 
-		pin(p < NUM_BANK0_GPIOS ? p : 0xff),
-		pinMask(p < NUM_BANK0_GPIOS? (1 << p) : 0),
+	GamepadButtonMapping(Mask_t bm) :
+		pinMask(0),
 		buttonMask(bm)
 	{}
 
-	uint8_t pin;
 	uint32_t pinMask;
 	const uint16_t buttonMask;
-
-	inline void setPin(uint8_t p)
-	{
-		if (p < NUM_BANK0_GPIOS)
-		{
-			pin = p;
-			pinMask = 1 << p;
-		}
-		else
-		{
-			pin = 0xff;
-			pinMask = 0;
-		}
-	}
-
-	bool isAssigned() const { return pin != 0xff; }
 };
 
 #define GAMEPAD_DIGITAL_INPUT_COUNT 18 // Total number of buttons, including D-pad
 
 class Gamepad {
 public:
-	Gamepad(int debounceMS = 5);
+	Gamepad();
 
 	void setup();
-	void teardown_and_reinit(const uint32_t profileNum);
+	void reinit();
 	void process();
 	void read();
 	void save();
-	void debounce();
-	
+
 	void hotkey();
+	void clearState();
 
 	/**
 	 * @brief Flag to indicate analog trigger support.
@@ -82,14 +59,6 @@ public:
 	 */
 	bool hasRightAnalogStick {false};
 
-	void *getReport();
-	uint16_t getReportSize();
-	HIDReport *getHIDReport();
-	SwitchReport *getSwitchReport();
-	XInputReport *getXInputReport();
-	KeyboardReport *getKeyboardReport();
-	PS4Report *getPS4Report();
-
 	/**
 	 * @brief Check for a button press. Used by `pressed[Button]` helper methods.
 	 */
@@ -100,7 +69,9 @@ public:
 	/**
 	 * @brief Check for a dpad press. Used by `pressed[Dpad]` helper methods.
 	 */
-	inline bool __attribute__((always_inline)) pressedDpad(const uint8_t mask) { return (state.dpad & mask) == mask; }
+	inline bool __attribute__((always_inline)) pressedDpad(const uint8_t mask) {
+		return (state.dpad & mask) == mask;
+	}
 
 	/**
 	 * @brief Check for an aux button press. Same idea as `pressedButton`.
@@ -118,7 +89,7 @@ public:
 	}
 
 	/**
-	 * @brief Remote hotkey bits from the state bitmask and provide pressed action.
+	 * @brief Remove hotkey bits from the state bitmask and provide pressed action.
 	 */
 	inline GamepadHotkey __attribute__((always_inline)) selectHotkey(const HotkeyEntry hotkey) {
 		state.buttons &= ~(hotkey.buttonsMask);
@@ -151,10 +122,9 @@ public:
 	void setSOCDMode(SOCDMode socdMode) { options.socdMode = socdMode; }
 	void setDpadMode(DpadMode dpadMode) { options.dpadMode = dpadMode; }
 
-	const uint8_t debounceMS;
-	GamepadDebouncer debouncer;
 	GamepadState rawState;
 	GamepadState state;
+	GamepadState turboState;
 	GamepadButtonMapping *mapDpadUp;
 	GamepadButtonMapping *mapDpadDown;
 	GamepadButtonMapping *mapDpadLeft;
@@ -173,25 +143,32 @@ public:
 	GamepadButtonMapping *mapButtonR3;
 	GamepadButtonMapping *mapButtonA1;
 	GamepadButtonMapping *mapButtonA2;
-	GamepadButtonMapping **gamepadMappings;
+	GamepadButtonMapping *mapButtonFn;
 
+	// gamepad specific proxy of debounced buttons --- 1 = active (inverse of the raw GPIO)
+	// see GP2040::debounceGpioGetAll for details
+	Mask_t debouncedGpio;
+
+	bool userRequestedReinit = false;
+
+	// These are special to SOCD
 	inline static const SOCDMode resolveSOCDMode(const GamepadOptions& options) {
-		 return (options.socdMode == SOCD_MODE_BYPASS &&
-				 (options.inputMode == INPUT_MODE_HID ||
-				  options.inputMode == INPUT_MODE_SWITCH ||
-				  options.inputMode == INPUT_MODE_PS4)) ?
-				SOCD_MODE_NEUTRAL : options.socdMode;
+		return (options.socdMode == SOCD_MODE_BYPASS &&
+				(options.inputMode == INPUT_MODE_HID ||
+				options.inputMode == INPUT_MODE_SWITCH ||
+				options.inputMode == INPUT_MODE_NEOGEO ||
+				options.inputMode == INPUT_MODE_PS4)) ?
+			SOCD_MODE_NEUTRAL : options.socdMode;
 	};
 
 private:
-	void releaseAllKeys(void);
-	void pressKey(uint8_t code);
+
 	uint8_t getModifier(uint8_t code);
 	uint8_t getMultimedia(uint8_t code);
-	void processHotkeyIfNewAction(GamepadHotkey action);
+	void processHotkeyAction(GamepadHotkey action);
 
-	GamepadOptions& options;
-	const HotkeyOptions& hotkeyOptions;
+	GamepadOptions & options;
+	const HotkeyOptions & hotkeyOptions;
 
 	GamepadHotkey lastAction = HOTKEY_NONE;
 };

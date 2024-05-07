@@ -1,6 +1,6 @@
  /*
  * SPDX-License-Identifier: MIT
- * SPDX-FileCopyrightText: Copyright (c) 2021 Jason Skuby (mytechtoybox.com)
+ * SPDX-FileCopyrightText: Copyright (c) 2024 OpenStickCommunity (gp2040-ce.info)
  */
 
 #ifndef STORAGE_H_
@@ -35,7 +35,8 @@ public:
 	GamepadOptions& getGamepadOptions() { return config.gamepadOptions; }
 	HotkeyOptions& getHotkeyOptions() { return config.hotkeyOptions; }
 	ForcedSetupOptions& getForcedSetupOptions() { return config.forcedSetupOptions; }
-	PinMappings& getPinMappings() { return config.pinMappings; }
+	PinMappings& getDeprecatedPinMappings() { return config.deprecatedPinMappings; }
+	GpioMappings& getGpioMappings() { return config.gpioMappings; }
 	KeyboardMapping& getKeyboardMapping() { return config.keyboardMapping; }
 	DisplayOptions& getDisplayOptions() { return config.displayOptions; }
 	DisplayOptions& getPreviewDisplayOptions() { return previewDisplayOptions; }
@@ -43,10 +44,11 @@ public:
 	AddonOptions& getAddonOptions() { return config.addonOptions; }
 	AnimationOptions_Proto& getAnimationOptions() { return config.animationOptions; }
 	ProfileOptions& getProfileOptions() { return config.profileOptions; }
+	GpioAction* getProfilePinMappings() { return functionalPinMappings; }
+	PeripheralOptions& getPeripheralOptions() { return config.peripheralOptions; }
 
+	void init();
 	bool save();
-
-	PinMappings& getProfilePinMappings();
 
 	// Perform saves that were enqueued from core1
 	void performEnqueuedSaves();
@@ -67,12 +69,12 @@ public:
 	uint8_t * GetFeatureData();
 
 	void setProfile(const uint32_t);		// profile support for multiple mappings
-	void setFunctionalPinMappings(const uint32_t);
+	void setFunctionalPinMappings();
 
 	void ResetSettings(); 				// EEPROM Reset Feature
 
 private:
-	Storage();
+	Storage() {}
 	bool CONFIG_MODE = false; 			// Config mode (boot)
 	Gamepad * gamepad = nullptr;    		// Gamepad data
 	Gamepad * processedGamepad = nullptr; // Gamepad with ONLY processed data
@@ -83,7 +85,7 @@ private:
 	critical_section_t animationOptionsCs;
 	uint32_t animationOptionsCrc = 0;
 	AnimationOptions animationOptionsToSave = {};
-	PinMappings* functionalPinMappings = nullptr;
+	GpioAction functionalPinMappings[NUM_BANK0_GPIOS];
 };
 
 #endif

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { hexToInt, rgbIntToHex } from './Utilities';
 
-const baseUrl =
+export const baseUrl =
 	process.env.NODE_ENV === 'production'
 		? ''
 		: import.meta.env.VITE_DEV_BASE_URL;
@@ -75,73 +75,110 @@ export const baseProfileOptions = {
 	],
 };
 
+export const basePeripheralMapping = {
+	peripheral: {
+		i2c0: {
+			enabled: 0,
+			sda: -1,
+			scl: -1,
+			speed: 400000,
+		},
+		i2c1: {
+			enabled: 0,
+			sda: -1,
+			scl: -1,
+			speed: 400000,
+		},
+		spi0: {
+			enabled: 0,
+			rx: -1,
+			cs: -1,
+			sck: -1,
+			tx: -1,
+		},
+		spi1: {
+			enabled: 0,
+			rx: -1,
+			cs: -1,
+			sck: -1,
+			tx: -1,
+		},
+		usb0: {
+			enabled: 0,
+			dp: -1,
+			enable5v: -1,
+			order: 0,
+		},
+	},
+};
+
 export const baseWiiControls = {
-    "nunchuk.analogStick.axisType": 1,
-    "nunchuk.buttonC": 1,
-    "nunchuk.buttonZ": 2,
-    "classic.analogLeftStick.x.axisType": 1,
-    "classic.analogLeftStick.y.axisType": 2,
-    "classic.analogRightStick.x.axisType": 3,
-    "classic.analogRightStick.y.axisType": 4,
-    "classic.analogLeftTrigger.axisType": 7,
-    "classic.analogRightTrigger.axisType": 8,
-    "classic.buttonA": 2,
-    "classic.buttonB": 1,
-    "classic.buttonX": 8,
-    "classic.buttonY": 4,
-    "classic.buttonL": 64,
-    "classic.buttonR": 128,
-    "classic.buttonZL": 16,
-    "classic.buttonZR": 32,
-    "classic.buttonMinus": 256,
-    "classic.buttonHome": 4096,
-    "classic.buttonPlus": 512,
-    "classic.buttonUp": 65536,
-    "classic.buttonDown": 131072,
-    "classic.buttonLeft": 262144,
-    "classic.buttonRight": 524288,
-    "guitar.analogStick.x.axisType": 1,
-    "guitar.analogStick.y.axisType": 2,
-    "guitar.analogWhammyBar.axisType": 14,
-    "guitar.buttonOrange": 64,
-    "guitar.buttonRed": 2,
-    "guitar.buttonBlue": 4,
-    "guitar.buttonGreen": 1,
-    "guitar.buttonYellow": 8,
-    "guitar.buttonPedal": 128,
-    "guitar.buttonMinus": 256,
-    "guitar.buttonPlus": 512,
-    "guitar.buttonStrumUp": 65536,
-    "guitar.buttonStrumDown": 131072,
-    "drum.analogStick.x.axisType": 1,
-    "drum.analogStick.y.axisType": 2,
-    "drum.buttonOrange": 64,
-    "drum.buttonRed": 2,
-    "drum.buttonBlue": 8,
-    "drum.buttonGreen": 1,
-    "drum.buttonYellow": 4,
-    "drum.buttonPedal": 128,
-    "drum.buttonMinus": 256,
-    "drum.buttonPlus": 512,
-    "turntable.analogStick.x.axisType": 1,
-    "turntable.analogStick.y.axisType": 2,
-    "turntable.analogLeftTurntable.axisType": 13,
-    "turntable.analogRightTurntable.axisType": 15,
-    "turntable.analogFader.axisType": 7,
-    "turntable.analogEffects.axisType": 8,
-    "turntable.buttonLeftGreen": 262144,
-    "turntable.buttonLeftRed": 65536,
-    "turntable.buttonLeftBlue": 524288,
-    "turntable.buttonRightGreen": 4,
-    "turntable.buttonRightRed": 8,
-    "turntable.buttonRightBlue": 2,
-    "turntable.buttonEuphoria": 32,
-    "turntable.buttonMinus": 256,
-    "turntable.buttonPlus": 512,
-    "taiko.buttonDonLeft": 262144,
-    "taiko.buttonKatLeft": 64,
-    "taiko.buttonDonRight": 1,
-    "taiko.buttonKatRight": 128,
+	'nunchuk.analogStick.axisType': 1,
+	'nunchuk.buttonC': 1,
+	'nunchuk.buttonZ': 2,
+	'classic.analogLeftStick.x.axisType': 1,
+	'classic.analogLeftStick.y.axisType': 2,
+	'classic.analogRightStick.x.axisType': 3,
+	'classic.analogRightStick.y.axisType': 4,
+	'classic.analogLeftTrigger.axisType': 7,
+	'classic.analogRightTrigger.axisType': 8,
+	'classic.buttonA': 2,
+	'classic.buttonB': 1,
+	'classic.buttonX': 8,
+	'classic.buttonY': 4,
+	'classic.buttonL': 64,
+	'classic.buttonR': 128,
+	'classic.buttonZL': 16,
+	'classic.buttonZR': 32,
+	'classic.buttonMinus': 256,
+	'classic.buttonHome': 4096,
+	'classic.buttonPlus': 512,
+	'classic.buttonUp': 65536,
+	'classic.buttonDown': 131072,
+	'classic.buttonLeft': 262144,
+	'classic.buttonRight': 524288,
+	'guitar.analogStick.x.axisType': 1,
+	'guitar.analogStick.y.axisType': 2,
+	'guitar.analogWhammyBar.axisType': 14,
+	'guitar.buttonOrange': 64,
+	'guitar.buttonRed': 2,
+	'guitar.buttonBlue': 4,
+	'guitar.buttonGreen': 1,
+	'guitar.buttonYellow': 8,
+	'guitar.buttonPedal': 128,
+	'guitar.buttonMinus': 256,
+	'guitar.buttonPlus': 512,
+	'guitar.buttonStrumUp': 65536,
+	'guitar.buttonStrumDown': 131072,
+	'drum.analogStick.x.axisType': 1,
+	'drum.analogStick.y.axisType': 2,
+	'drum.buttonOrange': 64,
+	'drum.buttonRed': 2,
+	'drum.buttonBlue': 8,
+	'drum.buttonGreen': 1,
+	'drum.buttonYellow': 4,
+	'drum.buttonPedal': 128,
+	'drum.buttonMinus': 256,
+	'drum.buttonPlus': 512,
+	'turntable.analogStick.x.axisType': 1,
+	'turntable.analogStick.y.axisType': 2,
+	'turntable.analogLeftTurntable.axisType': 13,
+	'turntable.analogRightTurntable.axisType': 15,
+	'turntable.analogFader.axisType': 7,
+	'turntable.analogEffects.axisType': 8,
+	'turntable.buttonLeftGreen': 262144,
+	'turntable.buttonLeftRed': 65536,
+	'turntable.buttonLeftBlue': 524288,
+	'turntable.buttonRightGreen': 4,
+	'turntable.buttonRightRed': 8,
+	'turntable.buttonRightBlue': 2,
+	'turntable.buttonEuphoria': 32,
+	'turntable.buttonMinus': 256,
+	'turntable.buttonPlus': 512,
+	'taiko.buttonDonLeft': 262144,
+	'taiko.buttonKatLeft': 64,
+	'taiko.buttonDonRight': 1,
+	'taiko.buttonKatRight': 128,
 };
 
 async function resetSettings() {
@@ -260,12 +297,6 @@ async function getLedOptions(setLoading) {
 		setLoading(false);
 
 		response.data.pledColor = rgbIntToHex(response.data.pledColor) || '#ffffff';
-		if (response.data.pledType === 1) {
-			response.data.pledIndex1 = response.data.pledPin1;
-			response.data.pledIndex2 = response.data.pledPin2;
-			response.data.pledIndex3 = response.data.pledPin3;
-			response.data.pledIndex4 = response.data.pledPin4;
-		}
 
 		return response.data;
 	} catch (error) {
@@ -275,8 +306,6 @@ async function getLedOptions(setLoading) {
 }
 
 async function setLedOptions(options) {
-	let data = sanitizeRequest(options);
-
 	return axios
 		.post(`${baseUrl}/api/setLedOptions`, sanitizeRequest(options))
 		.then((response) => {
@@ -339,81 +368,32 @@ async function setCustomTheme(customThemeOptions) {
 		});
 }
 
-async function getPinMappings(setLoading) {
-	setLoading(true);
-
+async function getPinMappings() {
 	try {
-		const response = await axios.get(`${baseUrl}/api/getPinMappings`);
-		let mappings = { ...baseButtonMappings };
-		for (let prop of Object.keys(response.data))
-			mappings[prop].pin = parseInt(response.data[prop]);
-
-		return mappings;
+		const { data } = await axios.get(`${baseUrl}/api/getPinMappings`);
+		return data;
 	} catch (error) {
-		console.error(error);
-		return false;
+		console.log(error);
 	}
 }
 
 async function setPinMappings(mappings) {
-	let data = {};
-	Object.keys(mappings).map(
-		(button, i) => (data[button] = mappings[button].pin),
-	);
-
-	return axios
-		.post(`${baseUrl}/api/setPinMappings`, sanitizeRequest(data))
-		.then((response) => {
-			console.log(response.data);
-			return true;
-		})
-		.catch((err) => {
-			console.error(err);
-			return false;
-		});
+	return axios.post(`${baseUrl}/api/setPinMappings`, mappings);
 }
 
-async function getProfileOptions(setLoading) {
-	setLoading(true);
-
+async function getProfileOptions() {
 	try {
-		const response = await axios.get(`${baseUrl}/api/getProfileOptions`);
-		let profileOptions = { ...baseProfileOptions };
-		response.data['alternativePinMappings'].forEach((altButtons, index) => {
-			for (let prop of Object.keys(altButtons))
-				profileOptions['alternativePinMappings'][index][prop].pin = parseInt(
-					response.data['alternativePinMappings'][index][prop],
-				);
-		});
-		setLoading(false);
-		return profileOptions;
+		const { data } = await axios.get(`${baseUrl}/api/getProfileOptions`);
+		return data?.alternativePinMappings;
 	} catch (error) {
-		console.error(error);
-		return false;
+		console.log(error);
 	}
 }
 
-async function setProfileOptions(options) {
-	let data = {};
-	data['alternativePinMappings'] = [];
-	options['alternativePinMappings'].forEach((altButtons, index) => {
-		let altMapping = {};
-		Object.keys(options['alternativePinMappings'][index]).map(
-			(button, i) => (altMapping[button] = altButtons[button].pin),
-		);
-		data['alternativePinMappings'].push(altMapping);
+async function setProfileOptions(mappings) {
+	return axios.post(`${baseUrl}/api/setProfileOptions`, {
+		alternativePinMappings: mappings,
 	});
-
-	return axios
-		.post(`${baseUrl}/api/setProfileOptions`, sanitizeRequest(data))
-		.then((response) => {
-			console.log(response.data);
-			return true;
-		})
-		.catch((err) => {
-			console.error(err);
-			return false;
-		});
 }
 
 async function getKeyMappings(setLoading) {
@@ -436,9 +416,7 @@ async function getKeyMappings(setLoading) {
 
 async function setKeyMappings(mappings) {
 	let data = {};
-	Object.keys(mappings).map(
-		(button, i) => (data[button] = mappings[button].key),
-	);
+	Object.keys(mappings).map((button) => (data[button] = mappings[button].key));
 
 	return axios
 		.post(`${baseUrl}/api/setKeyMappings`, sanitizeRequest(data))
@@ -460,11 +438,13 @@ async function getAddonsOptions(setLoading) {
 		const data = response.data;
 		setLoading(false);
 
-		let mappings = { ...baseButtonMappings };
-		for (let prop of Object.keys(data.keyboardHostMap))
-			mappings[prop].key = parseInt(data.keyboardHostMap[prop]);
-		data.keyboardHostMap = mappings;
-		return data;
+		// Merge saved keyMappings with defaults
+		const keyboardHostMap = Object.entries(data.keyboardHostMap).reduce(
+			(acc, [key, value]) => ({ ...acc, [key]: { ...acc[key], key: value } }),
+			baseButtonMappings,
+		);
+
+		return { ...data, keyboardHostMap };
 	} catch (error) {
 		setLoading(false);
 		console.error(error);
@@ -475,7 +455,7 @@ async function setAddonsOptions(options) {
 	if (options.keyboardHostMap) {
 		let data = {};
 		Object.keys(options.keyboardHostMap).map(
-			(button, i) => (data[button] = options.keyboardHostMap[button].key),
+			(button) => (data[button] = options.keyboardHostMap[button].key),
 		);
 		options.keyboardHostMap = data;
 	}
@@ -536,7 +516,7 @@ async function setPS4Options(options) {
 async function getWiiControls(setLoading) {
 	setLoading(true);
 
-    try {
+	try {
 		const response = await axios.get(`${baseUrl}/api/getWiiControls`);
 		setLoading(false);
 
@@ -549,10 +529,39 @@ async function getWiiControls(setLoading) {
 }
 
 async function setWiiControls(mappings) {
-    console.dir(mappings);
+	console.dir(mappings);
 
 	return axios
 		.post(`${baseUrl}/api/setWiiControls`, sanitizeRequest(mappings))
+		.then((response) => {
+			console.log(response.data);
+			return true;
+		})
+		.catch((err) => {
+			console.error(err);
+			return false;
+		});
+}
+
+async function getPeripheralOptions(setLoading) {
+	setLoading(true);
+	try {
+		const response = await axios.get(`${baseUrl}/api/getPeripheralOptions`);
+		setLoading(false);
+
+		let mappings = { ...basePeripheralMapping, ...response.data };
+		return mappings;
+	} catch (error) {
+		setLoading(false);
+		console.error(error);
+	}
+}
+
+async function setPeripheralOptions(mappings) {
+	console.dir(mappings);
+
+	return axios
+		.post(`${baseUrl}/api/setPeripheralOptions`, sanitizeRequest(mappings))
 		.then((response) => {
 			console.log(response.data);
 			return true;
@@ -602,17 +611,13 @@ async function getUsedPins(setLoading) {
 	}
 }
 
-async function getHeldPins(setLoading, createAbortSignal) {
-	setLoading && setLoading(true);
-
+async function getHeldPins(abortSignal) {
 	try {
 		const response = await axios.get(`${baseUrl}/api/getHeldPins`, {
-			signal: createAbortSignal(),
+			signal: abortSignal,
 		});
-		setLoading && setLoading(false);
 		return response.data;
 	} catch (error) {
-		setLoading && setLoading(false);
 		if (error?.code === 'ERR_CANCELED') return { canceled: true };
 		else console.error(error);
 	}
@@ -635,10 +640,6 @@ async function reboot(bootMode) {
 
 function sanitizeRequest(request) {
 	const newRequest = { ...request };
-	delete newRequest.pledIndex1;
-	delete newRequest.pledIndex2;
-	delete newRequest.pledIndex3;
-	delete newRequest.pledIndex4;
 	delete newRequest.usedPins;
 	return newRequest;
 }
@@ -666,6 +667,8 @@ const WebApi = {
 	setPS4Options,
 	getWiiControls,
 	setWiiControls,
+	getPeripheralOptions,
+	setPeripheralOptions,
 	getSplashImage,
 	setSplashImage,
 	getFirmwareVersion,
